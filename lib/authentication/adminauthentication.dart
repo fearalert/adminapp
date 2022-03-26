@@ -20,15 +20,15 @@ class AdminAuthentication {
     try {
       await _auth
           .signInWithEmailAndPassword(email: email!, password: password!)
-          .then((userID) => {
-                print("Login Successful"),
-                getSnackBar(
-                    title: "Sucessful",
-                    message: 'Login Sucessful',
-                    color: Colors.green.shade300),
-                // Fluttertoast.showToast(msg: "Login Sucessful"),
-                Get.offAllNamed(HomeScreen.id)
-              });
+          .then((userID) {
+        print("Login Successful");
+        getSnackBar(
+            title: "Sucessful",
+            message: 'Login Sucessful',
+            color: Colors.green.shade300);
+        // Fluttertoast.showToast(msg: "Login Sucessful"),
+        Get.offAllNamed(HomeScreen.id);
+      });
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case 'user-not-found':
@@ -63,14 +63,15 @@ class AdminAuthentication {
       // Fluttertoast.showToast(
       //     msg: "Either password is incorrect\n or the account does not exist.");
     }
-    return null;
   }
 
   Future<String?> signUp(String? email, String? password) async {
     try {
       final firebaseUser = await _auth
           .createUserWithEmailAndPassword(email: email!, password: password!)
-          .then((value) => postDetailsToFirestore());
+          .then((value) {
+        postDetailsToFirestore();
+      });
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case 'email-already-in-use':
@@ -105,7 +106,6 @@ class AdminAuthentication {
       // print(error);
       // Fluttertoast.showToast(msg: 'Error in SignUp. Please try again.');
     }
-    return null;
   }
 
   Future<bool?> isEmailVerified() async {
