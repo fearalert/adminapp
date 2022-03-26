@@ -91,8 +91,9 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                 },
                                 child: CircleAvatar(
                                   radius: size.width * 0.12,
-                                  backgroundImage: NetworkImage(
-                                    data['imgUrl'],
+                                  backgroundImage: const NetworkImage(
+                                    // data['imgUrl'],
+                                    'https://th.bing.com/th/id/R.0e92282c004ac13f55a8f43479c4125d?rik=gI7lf2sePTbhqA&pid=ImgRaw&r=0',
                                   ),
                                 ),
                               ),
