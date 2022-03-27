@@ -116,7 +116,7 @@ class _UsersState extends State<Users> {
                             SizedBox(
                               height: size.height * 0.005,
                             ),
-                            Text(data['phoneNo'], style: GoogleFonts.laila()),
+                            Text('${data['phoneNo']}', style: GoogleFonts.laila()),
                             SizedBox(
                               height: size.height * 0.005,
                             ),
