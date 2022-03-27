@@ -45,16 +45,16 @@ class Database {
 
 class UserData {
   String? userName;
-  String? uid;
+  String? id;
   String? userEmail;
   String? userPhoneNo;
-  // String? profileUrl;
+  String? profileUrl;
 
   UserData.fromData(Map userData) {
     userName = userData['name'];
-    uid = userData['uid'];
+    id = userData['id'];
     userPhoneNo = userData['phoneNo'];
     userEmail = userData['email'];
-    // profileUrl = userData['profileUrl'];
+    profileUrl = userData['profileUrl'];
   }
 }

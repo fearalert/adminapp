@@ -116,15 +116,17 @@ class _UsersState extends State<Users> {
                             SizedBox(
                               height: size.height * 0.005,
                             ),
-                            Text('${data['phoneNo']}', style: GoogleFonts.laila()),
-                            SizedBox(
-                              height: size.height * 0.005,
-                            ),
-                            Text('ID:' + data['id'],
+                            Text('${data['phoneNo']}',
                                 style: GoogleFonts.laila()),
                             SizedBox(
                               height: size.height * 0.005,
                             ),
+                            // Text(data['uid'])
+                            // Text('ID:' + data['id'],
+                            //     style: GoogleFonts.laila()),
+                            // SizedBox(
+                            //   height: size.height * 0.005,
+                            // ),
                           ],
                         ),
                         shape: const RoundedRectangleBorder(
