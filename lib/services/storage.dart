@@ -10,8 +10,8 @@ class Storage {
   Reference ref = FirebaseStorage.instance
       .ref('places')
       .child('${placesDetails.locationName}')
-      .child('${placesDetails.placeName}')
-      .child('${placesDetails.placeName}.jpg');
+      .child('${placesDetails.packageName}')
+      .child('${placesDetails.packageName}.jpg');
 
   Future uploadImage() async {
     try {
@@ -50,8 +50,8 @@ class Storage {
     try {
       instance
           .ref(
-              'places/${placesDetails.locationName}/${placesDetails.placeName}')
-          .child('${placesDetails.placeName}.jpg')
+              'places/${placesDetails.locationName}/${placesDetails.packageName}')
+          .child('${placesDetails.packageName}.jpg')
           .delete();
     } catch (e) {
       print(e);
@@ -63,8 +63,8 @@ class Storage {
     try {
       return await instance
           .ref(
-              'places/${placesDetails.locationName}/${placesDetails.placeName}')
-          .child('${placesDetails.placeName}.jpg')
+              'places/${placesDetails.locationName}/${placesDetails.packageName}')
+          .child('${placesDetails.packageName}.jpg')
           .getDownloadURL();
     } catch (e) {
       print(e);

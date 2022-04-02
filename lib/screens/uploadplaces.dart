@@ -60,7 +60,7 @@ class _UploadPlacesState extends State<UploadPlaces> {
         toolbarHeight: 65.0,
         centerTitle: true,
         title: Text(
-          'Upload places',
+          'Upload package',
           style: GoogleFonts.laila(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class _UploadPlacesState extends State<UploadPlaces> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Place Details',
+                        'Package Details',
                         style: GoogleFonts.laila(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w600,
@@ -116,7 +116,7 @@ class _UploadPlacesState extends State<UploadPlaces> {
                   ],
                 ),
                 CustomTextField(
-                  hintText: 'Place name',
+                  hintText: 'Package name',
                   controller: uploadPlaceController.placeNameController,
                   isNumber: false,
                 ),

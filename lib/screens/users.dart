@@ -63,10 +63,10 @@ class _UsersState extends State<Users> {
                 ],
               );
             } else {
+              print(snapshot.data);
+
               return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  print(document.data());
-
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   return Padding(
@@ -116,17 +116,12 @@ class _UsersState extends State<Users> {
                             SizedBox(
                               height: size.height * 0.005,
                             ),
-                            Text('${data['phoneNo']}',
-                                style: GoogleFonts.laila()),
+                            Text(data['phoneNo'].toString(), style: GoogleFonts.laila()),
                             SizedBox(
                               height: size.height * 0.005,
                             ),
-                            // Text(data['uid'])
-                            // Text('ID:' + data['id'],
-                            //     style: GoogleFonts.laila()),
-                            // SizedBox(
-                            //   height: size.height * 0.005,
-                            // ),
+                           
+                           
                           ],
                         ),
                         shape: const RoundedRectangleBorder(

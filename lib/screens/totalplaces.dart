@@ -5,9 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
+import 'package:traveladminapp/model/databaseModel.dart';
 
 final Stream<QuerySnapshot> _placestream =
-    FirebaseFirestore.instance.collection('places').snapshots();
+    FirebaseFirestore.instance.collection('packages').snapshots();
 
 class TotalPlaces extends StatefulWidget {
   const TotalPlaces({Key? key}) : super(key: key);
@@ -87,13 +88,15 @@ class _TotalPlacesState extends State<TotalPlaces> {
                             ClipRect(
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.dialog(const PackageDetails());
+                                  Get.dialog( PackageDetails(
+                                    packageDetail: data,
+                                  ));
                                 },
                                 child: CircleAvatar(
                                   radius: size.width * 0.12,
-                                  backgroundImage: const NetworkImage(
-                                    // data['imgUrl'],
-                                    'https://th.bing.com/th/id/R.0e92282c004ac13f55a8f43479c4125d?rik=gI7lf2sePTbhqA&pid=ImgRaw&r=0',
+                                  backgroundColor: Colors.black38,
+                                  backgroundImage: NetworkImage(
+                                    data['imgUrl'],
                                   ),
                                 ),
                               ),
@@ -113,7 +116,7 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      data['placeName'],
+                                      data['packageName'],
                                       style: GoogleFonts.laila(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w600,
@@ -164,7 +167,10 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                     PlacesComponents(
                                       count: 'Delete',
                                       icon: Icons.delete,
-                                      ontap: () {},
+                                      ontap: () async{
+                                       const  Center(child: CircularProgressIndicator());
+                                        database.deletePackage(data['packageId']);
+                                      },
                                     ),
                                     SizedBox(width: size.width * 0.01),
                                   ],

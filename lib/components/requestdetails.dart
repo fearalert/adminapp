@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/custombutton.dart';
 import 'package:traveladminapp/constants/constants.dart';
+import 'package:traveladminapp/model/databaseModel.dart';
 
 class RequestDetails extends StatelessWidget {
-  const RequestDetails({Key? key}) : super(key: key);
+  final Map<String, dynamic> requestDetail;
+  const  RequestDetails({Key? key,required this.requestDetail}) ;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class RequestDetails extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    'Simran Ghimire',
+                    requestDetail['userName'],
                     style: GoogleFonts.lato(
                       fontSize: 20.0,
                       color: Colors.black,
@@ -95,7 +98,7 @@ class RequestDetails extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0),
                       child: Text(
-                        '9816933888',
+                        requestDetail['userPhone'],
                         style: GoogleFonts.roboto(
                             fontSize: 14.0,
                             color: Colors.black,
@@ -122,7 +125,7 @@ class RequestDetails extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          'useremail@gmail.com',
+                          requestDetail['userEmail'],
                           style: GoogleFonts.roboto(
                             fontSize: 14.0,
                             color: Colors.black,
@@ -154,113 +157,151 @@ class RequestDetails extends StatelessWidget {
 }
 
 class PackageDetails extends StatelessWidget {
-  const PackageDetails({Key? key}) : super(key: key);
+  final Map<String, dynamic> packageDetail;
+   PackageDetails({Key? key, required this.packageDetail}) ;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Dialog(
-      shape: RoundedRectangleBorder(
-          side: BorderSide.none, borderRadius: BorderRadius.circular(20.0)),
-      elevation: 10.0,
-      backgroundColor: Colors.white,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: size.width,
-            padding: const EdgeInsets.only(
-              top: 15.0,
-              bottom: 20.0,
-              left: 20.0,
-              right: 20.0,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.white38,
-                  offset: Offset(0, 2),
-                  blurRadius: 10.0,
+    return FutureBuilder<DocumentSnapshot>(
+      future: packageRef.doc(packageDetail['packageId'].toString()).get(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+        return Dialog(
+          shape: RoundedRectangleBorder(
+              side: BorderSide.none, borderRadius: BorderRadius.circular(20.0)),
+          elevation: 10.0,
+          backgroundColor: Colors.white,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: size.width,
+                padding: const EdgeInsets.only(
+                  top: 15.0,
+                  bottom: 20.0,
+                  left: 20.0,
+                  right: 20.0,
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                const CircleAvatar(
-                  radius: 55.0,
-                  backgroundColor: kSecondaryColor,
-                  // backgroundImage: userData.profileUrl == null ? AssetImage('images/person.png') : NetworkImage( userData.profileUrl),
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Center(
-                  child: Text(
-                    'PackageName/PlaceName',
-                    style: GoogleFonts.lato(
-                      fontSize: 20.0,
-                      color: Colors.black,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.white38,
+                      offset: Offset(0, 2),
+                      blurRadius: 10.0,
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 100,
-                  child: Divider(
-                    color: kPrimaryColor,
-                  ),
-                ),
-                Column(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 26.0, left: 20.0),
-                          child: Text(
-                            'Place Details:',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 18.0,
-                              color: kPrimaryColor,
-                            ),
-                          ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                     CircleAvatar(
+                      radius: 55.0,
+                      backgroundColor: kSecondaryColor,
+                      backgroundImage:  NetworkImage(data['imgUrl']),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Center(
+                      child: Text(
+                        data['packageName'],
+                        style: GoogleFonts.lato(
+                          fontSize: 20.0,
+                          color: Colors.black,
                         ),
-                      ],
+                      ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      width: 100,
+                      child: Divider(
+                        color: kPrimaryColor,
+                      ),
                     ),
-                    Row(
+                    Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: Icon(
-                            Icons.list,
-                            color: Colors.blueGrey.shade200,
-                          ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 26.0, left: 20.0),
+                              child: Text(
+                                'Place Details:',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 18.0,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            'Place Name',
-                            style: GoogleFonts.roboto(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal),
-                          ),
+                        const SizedBox(
+                          height: 5,
                         ),
-                      ],
-                    ),
-                    Row(
+                        
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 6.0),
+                              child: Icon(
+                                Icons.location_on,
+                                size: 22,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  data['locationName'],
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                         Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: Icon(
+                                Icons.start,
+                                color: Colors.blueGrey.shade200,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                data['startPointName'],
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                         Row(
                       children: [
                         const Padding(
                           padding: EdgeInsets.only(left: 6.0),
                           child: Icon(
-                            Icons.location_on,
+                            Icons.stop,
                             size: 22,
                             color: Colors.blueGrey,
                           ),
@@ -269,7 +310,7 @@ class PackageDetails extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              'Kaski, Pokhara',
+                              data['endPointName'],
                               style: GoogleFonts.roboto(
                                 fontSize: 14.0,
                                 color: Colors.black,
@@ -279,115 +320,101 @@ class PackageDetails extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 26.0, left: 6.0),
-                          child: Text(
-                            'Travel Details:',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 18.0,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 26.0, left: 6.0),
+                              child: Text(
+                                'Travel Details:',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 18.0,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                       
+                      ],
                     ),
+                    SizedBox(
+                      height: size.height * 0.005,
+                    ),
+                    
+                   
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 6.0),
                           child: Icon(
-                            Icons.start,
-                            color: Colors.blueGrey.shade200,
+                            Icons.price_check,
+                            color: Colors.blueGrey,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            'Start Point Name',
+                            data['price'].toString(),
                             style: GoogleFonts.roboto(
-                                fontSize: 12.0,
+                                fontSize: 14.0,
                                 color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.005,
-                ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 6.0),
-                      child: Icon(
-                        Icons.stop,
-                        size: 22,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          'End Point Name',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14.0,
-                            color: Colors.black,
+                   Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 6.0),
+                          child: Icon(
+                            Icons.description,
+                            color: Colors.blueGrey,
                           ),
                         ),
-                      ),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              data['placeDescription'].toString(),
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                     SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    CustomButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        text: 'OK',
+                        color: Colors.white,
+                        backgroundColor: const Color(0xff4f5b8a),
+                        width: 55.0,
+                        fontSize: 12.0),
                   ],
                 ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 6.0),
-                      child: Icon(
-                        Icons.price_check,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Text(
-                        'Price',
-                        style: GoogleFonts.roboto(
-                            fontSize: 14.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.05,
-                ),
-                CustomButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    text: 'OK',
-                    color: Colors.white,
-                    backgroundColor: const Color(0xff4f5b8a),
-                    width: 55.0,
-                    fontSize: 12.0),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+        }
+
+        return const  Center(child: CircularProgressIndicator());
+      }
     );
   }
 }

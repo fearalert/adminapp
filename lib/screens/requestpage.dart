@@ -1,13 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
+import 'package:traveladminapp/model/databaseModel.dart';
 
-class RequestPage extends StatelessWidget {
+class RequestPage extends StatefulWidget {
   const RequestPage({Key? key}) : super(key: key);
 
+  @override
+  State<RequestPage> createState() => _RequestPageState();
+}
+
+class _RequestPageState extends State<RequestPage> {
+  final Stream<QuerySnapshot> requestedPackage = FirebaseFirestore.instance.collection('requestedPackage').snapshots();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,124 +38,145 @@ class RequestPage extends StatelessWidget {
       drawer: const Drawer(
         child: MenuItems(),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            StreamBuilder(
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 12.0, left: 12.0, right: 12.0, top: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.01,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: requestedPackage,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+           if (snapshot.hasError) {
+        return const Text('Something went wrong');
+      }
+
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Text("Loading");
+      }
+
+         return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                 
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 12.0, left: 12.0, right: 12.0, top: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  ClipRect(
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.dialog( PackageDetails(
+                          packageDetail: data,
+                        ));
+                      },
+                      child: CircleAvatar(
+                        radius: size.width * 0.12,
+                        backgroundImage:  NetworkImage(
+                          data['packageImg'],
                         ),
-                        ClipRect(
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.dialog(const PackageDetails());
-                            },
-                            child: CircleAvatar(
-                              radius: size.width * 0.12,
-                              backgroundImage: const NetworkImage(
-                                'https://th.bing.com/th/id/R.0e92282c004ac13f55a8f43479c4125d?rik=gI7lf2sePTbhqA&pid=ImgRaw&r=0',
-                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.025,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data['packageName'],
+                            style: GoogleFonts.laila(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.025,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.005,
+                      ),
+                      Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: size.height * 0.01,
+                            const Icon(
+                              Icons.email,
+                              color: kSecondaryColor,
+                              size: 12.0,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Package name',
-                                  style: GoogleFonts.laila(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.005,
-                            ),
-                            Row(
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.email,
-                                    color: kSecondaryColor,
-                                    size: 12.0,
-                                  ),
-                                  Text('email@email.com',
-                                      style: GoogleFonts.laila(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                      )),
-                                ]),
-                            Row(
-                              children: [
-                                RequestCardComponents(
-                                  title: 'Details',
-                                  icon: Icons.info,
-                                  ontap: () {
-                                    Get.dialog(
-                                      const RequestDetails(),
-                                      barrierDismissible: true,
-                                      transitionDuration:
-                                          const Duration(milliseconds: 300),
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: size.width * 0.01),
-                                RequestCardComponents(
-                                  title: 'Cancel',
-                                  icon: Icons.cancel,
-                                  ontap: () {},
-                                ),
-                                SizedBox(width: size.width * 0.01),
-                                RequestCardComponents(
-                                  title: 'Accept',
-                                  icon: Icons.check,
-                                  ontap: () {},
-                                ),
-                                SizedBox(width: size.width * 0.01),
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                            Text(data['userEmail'],
+                                style: GoogleFonts.laila(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                )),
+                          ]),
+                      Row(
+                        children: [
+                          RequestCardComponents(
+                            title: 'Details',
+                            icon: Icons.info,
+                            ontap: () {
+                              Get.dialog(
+                                 RequestDetails(requestDetail: data,),
+                                barrierDismissible: true,
+                                transitionDuration:
+                                    const Duration(milliseconds: 300),
+                              );
+                            },
+                          ),
+                          SizedBox(width: size.width * 0.01),
+                          RequestCardComponents(
+                            title: 'Cancel',
+                            icon: Icons.cancel,
+                            ontap: () {
+                              database.deleteBookings(data['requestedId']);
+                            },
+                          ),
+                          SizedBox(width: size.width * 0.01),
+                          RequestCardComponents(
+                            title: 'Accept',
+                            icon: Icons.check,
+                            ontap: () {
+                                database.acceptPackage(data['requestedId']);
+
+                            },
+                          ),
+                          SizedBox(width: size.width * 0.01),
+                        ],
+                      )
+                    ],
                   ),
-                  color: Colors.white,
-                  elevation: 2.0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                  ),
-                );
-              },
+                ],
+              ),
             ),
-          ],
-        ),
+            color: Colors.white,
+            elevation: 2.0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+            ),
+          );
+
+              }).toList(),
+            );
+
+
+
+          
+        },
       ),
     );
   }

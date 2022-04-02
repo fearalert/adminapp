@@ -5,49 +5,55 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traveladminapp/authentication/adminauthentication.dart';
 import 'package:traveladminapp/screens/homescreen.dart';
+import 'package:uuid/uuid.dart';
 
 class PlacesDetails {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-  String? placeName;
+  String? packageName;
   String? locationName;
   String? imgUrl;
   String? placeDescription;
   String? startPointName;
   String? endPointName;
+  String? packageId;
   double? price;
 
   PlacesDetails({
-    this.placeName,
+    this.packageName,
     this.locationName,
     this.imgUrl,
     this.placeDescription,
     this.startPointName,
     this.endPointName,
     this.price,
+    this.packageId,
+
   });
 
   factory PlacesDetails.fromMap(map) {
     return PlacesDetails(
-      placeName: map['placeName'],
+      packageName: map['placeName'],
       locationName: map['locationName'],
       imgUrl: map['imgUrl'],
       placeDescription: map['placeDescription'],
       startPointName: map['startPointName'],
       endPointName: map['endPointName'],
       price: map['price'],
+      packageId: map['packageId']
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'placeName': placeName,
+      'packageName': packageName,
       'locationName': locationName,
       'imgUrl': imgUrl,
       'placeDescription': placeDescription,
       'startPointName': startPointName,
       'endPointName': endPointName,
       'price': price,
+      'packageId': packageId, 
     };
   }
 }
@@ -56,7 +62,9 @@ FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 PlacesDetails placesDetails = PlacesDetails();
 
 postPlaceDetailsToFirestore() async {
-  placesDetails.placeName = uploadPlaceController.placeNameController.text;
+  const uuid = Uuid();
+     String uid = uuid.v4();
+  placesDetails.packageName = uploadPlaceController.placeNameController.text;
   placesDetails.locationName =
       uploadPlaceController.locationNameController.text;
   placesDetails.imgUrl = uploadPlaceController.imgUrlController.text;
@@ -68,11 +76,12 @@ postPlaceDetailsToFirestore() async {
       uploadPlaceController.endPointNameController.text;
   placesDetails.price =
       double.parse(uploadPlaceController.priceController.text);
+  placesDetails.packageId = uid;
 
-  return await firebaseFirestore
-      .collection('places')
-      .doc()
-      .set(placesDetails.toMap())
+  return await FirebaseFirestore.instance
+      .collection('packages')
+      .doc(uid)
+      .set(placesDetails.toMap(),SetOptions(merge: true))
       .then((value) {
     print('data added');
     getSnackBar(

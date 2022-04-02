@@ -1,11 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
-import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
-import 'package:traveladminapp/components/customcard.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/constants/constants.dart';
+import 'package:traveladminapp/screens/notificationscreen.dart';
+import 'package:traveladminapp/model/databaseModel.dart';
 
 class HomeScreen extends StatelessWidget {
   static const id = '/home';
@@ -13,49 +13,247 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
-    final List<String> texts = [
-      'Total Users',
-      'Total Places',
-      ' Notifications',
-      'Total Requests',
-      // 'Featured',
-    ];
-    final List<int> count = [
-      1521, 20, 12, 11,
-      // 10
-    ];
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: appbar('Dashboard', Icons.notifications_active),
       drawer: const Drawer(
         child: MenuItems(),
       ),
       backgroundColor: kTextfieldColor,
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 8.0),
-                child: StaggeredGridView.countBuilder(
-                    itemCount: 4,
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 12,
-                    itemBuilder: (context, index) {
-                      return CustomCard(
-                        text: texts[index],
-                        number: count[index],
-                      );
-                    },
-                    staggeredTileBuilder: (index) {
-                      return StaggeredTile.count(1, index.isOdd ? 1.0 : 1.0);
-                    }),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: null,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            return Column(
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: size.width * 0.45,
+                            height: size.height * 0.2,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Total Users',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                                FutureBuilder<int>(
+                                  future: database.getCountUsers(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.done) {
+                                    return Text(
+                                    '${snapshot.data}',
+                                      style: GoogleFonts.laila(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                    }
+
+                                    return const Center(child: CircularProgressIndicator(),);
+                                  }
+                                  
+                                ),
+                              ],
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: size.width * 0.45,
+                            height: size.height * 0.2,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Total Packages',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                                FutureBuilder<int>(
+                                  future: database.getCountPackages(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.done) {
+                                    return Text(
+                                     '${snapshot.data}',
+                                      style: GoogleFonts.laila(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                    }
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+                                ),
+                              ],
+                            )),
+                      ),
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: size.width * 0.45,
+                            height: size.height * 0.2,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Notifications',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                                Text(
+                                  '20',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: size.width * 0.45,
+                            height: size.height * 0.2,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Total Requests',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                                FutureBuilder<int>(
+                                  future: database.getCountbooking(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.done) {
+                                    return Text(
+                                      '${snapshot.data}',
+                                      style: GoogleFonts.laila(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                    }
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+                                ),
+                              ],
+                            )),
+                      ),
+                    ]),
+              ],
+            );
+            // return Center(
+            //   child: Column(
+            //     children: [
+            //       Expanded(
+            //         child: Padding(
+            //           padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 8.0),
+            //           child: StaggeredGridView.countBuilder(
+            //               itemCount: 4,
+            //               crossAxisCount: 2,
+            //               crossAxisSpacing: 10,
+            //               mainAxisSpacing: 12,
+            //               itemBuilder: (context, index) {
+            //                 return CustomCard(
+            //                   text: texts[index],
+            //                   number: count[index],
+            //                 );
+            //               },
+            //               staggeredTileBuilder: (index) {
+            //                 return StaggeredTile.count(
+            //                     1, index.isOdd ? 1.0 : 1.0);
+            //               }),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // );
+          }),
     );
   }
 }
@@ -78,7 +276,11 @@ appbar(String? text, IconData icon) {
     actions: <Widget>[
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: IconButton(onPressed: () {}, icon: Icon(icon)),
+        child: IconButton(
+            onPressed: () {
+              Get.off(const NotificationScreen());
+            },
+            icon: Icon(icon)),
       ),
     ],
   );
@@ -110,7 +312,7 @@ class CustomTextField extends StatelessWidget {
           } else if (value!.isEmpty) {
             return 'Field cannot be empty';
           }
-          return null;
+          // return null;
         },
         onSaved: (value) {
           controller!.text = value!;
@@ -130,3 +332,4 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
