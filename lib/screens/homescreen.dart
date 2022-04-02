@@ -26,9 +26,11 @@ class HomeScreen extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -61,23 +63,24 @@ class HomeScreen extends StatelessWidget {
                                   height: size.height * 0.03,
                                 ),
                                 FutureBuilder<int>(
-                                  future: database.getCountUsers(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.done) {
-                                    return Text(
-                                    '${snapshot.data}',
-                                      style: GoogleFonts.laila(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    );
-                                    }
+                                    future: database.getCountUsers(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Text(
+                                          '${snapshot.data}',
+                                          style: GoogleFonts.laila(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      }
 
-                                    return const Center(child: CircularProgressIndicator(),);
-                                  }
-                                  
-                                ),
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }),
                               ],
                             )),
                       ),
@@ -112,21 +115,22 @@ class HomeScreen extends StatelessWidget {
                                   height: size.height * 0.03,
                                 ),
                                 FutureBuilder<int>(
-                                  future: database.getCountPackages(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.done) {
-                                    return Text(
-                                     '${snapshot.data}',
-                                      style: GoogleFonts.laila(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    );
-                                    }
-                                    return const Center(child: CircularProgressIndicator());
-                                  }
-                                ),
+                                    future: database.getCountPackages(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Text(
+                                          '${snapshot.data}',
+                                          style: GoogleFonts.laila(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      }
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }),
                               ],
                             )),
                       ),
@@ -195,7 +199,7 @@ class HomeScreen extends StatelessWidget {
                                   height: 20,
                                 ),
                                 Text(
-                                  'Total Requests',
+                                  'Pending Requests',
                                   style: GoogleFonts.laila(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -206,53 +210,78 @@ class HomeScreen extends StatelessWidget {
                                   height: size.height * 0.03,
                                 ),
                                 FutureBuilder<int>(
-                                  future: database.getCountbooking(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.done) {
-                                    return Text(
-                                      '${snapshot.data}',
-                                      style: GoogleFonts.laila(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    );
-                                    }
-                                    return const Center(child: CircularProgressIndicator());
-                                  }
-                                ),
+                                    future: database.getCountbooking(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Text(
+                                          '${snapshot.data}',
+                                          style: GoogleFonts.laila(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      }
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }),
                               ],
                             )),
                       ),
                     ]),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      width: size.width * 0.45,
+                      height: size.height * 0.2,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'Accepted Bookings',
+                            style: GoogleFonts.laila(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.03,
+                          ),
+                          FutureBuilder<int>(
+                              future: database.getCountAcceptedbooking(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Text(
+                                    '${snapshot.data}',
+                                    style: GoogleFonts.laila(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                }
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }),
+                        ],
+                      )),
+                ),
               ],
             );
-            // return Center(
-            //   child: Column(
-            //     children: [
-            //       Expanded(
-            //         child: Padding(
-            //           padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 8.0),
-            //           child: StaggeredGridView.countBuilder(
-            //               itemCount: 4,
-            //               crossAxisCount: 2,
-            //               crossAxisSpacing: 10,
-            //               mainAxisSpacing: 12,
-            //               itemBuilder: (context, index) {
-            //                 return CustomCard(
-            //                   text: texts[index],
-            //                   number: count[index],
-            //                 );
-            //               },
-            //               staggeredTileBuilder: (index) {
-            //                 return StaggeredTile.count(
-            //                     1, index.isOdd ? 1.0 : 1.0);
-            //               }),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // );
           }),
     );
   }
@@ -332,4 +361,3 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-

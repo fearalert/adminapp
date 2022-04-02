@@ -30,7 +30,7 @@ class _TotalPlacesState extends State<TotalPlaces> {
         toolbarHeight: 65.0,
         centerTitle: true,
         title: Text(
-          'Total places',
+          'Total Packages',
           style: GoogleFonts.laila(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _TotalPlacesState extends State<TotalPlaces> {
                             ClipRect(
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.dialog( PackageDetails(
+                                  Get.dialog(PackageDetails(
                                     packageDetail: data,
                                   ));
                                 },
@@ -167,9 +167,11 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                     PlacesComponents(
                                       count: 'Delete',
                                       icon: Icons.delete,
-                                      ontap: () async{
-                                       const  Center(child: CircularProgressIndicator());
-                                        database.deletePackage(data['packageId']);
+                                      ontap: () async {
+                                        const Center(
+                                            child: CircularProgressIndicator());
+                                        database
+                                            .deletePackage(data['packageId']);
                                       },
                                     ),
                                     SizedBox(width: size.width * 0.01),

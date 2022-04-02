@@ -8,7 +8,7 @@ import 'package:traveladminapp/model/databaseModel.dart';
 
 class RequestDetails extends StatelessWidget {
   final Map<String, dynamic> requestDetail;
-  const  RequestDetails({Key? key,required this.requestDetail}) ;
+  const RequestDetails({Key? key, required this.requestDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -158,106 +158,229 @@ class RequestDetails extends StatelessWidget {
 
 class PackageDetails extends StatelessWidget {
   final Map<String, dynamic> packageDetail;
-   PackageDetails({Key? key, required this.packageDetail}) ;
+  PackageDetails({Key? key, required this.packageDetail});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return FutureBuilder<DocumentSnapshot>(
-      future: packageRef.doc(packageDetail['packageId'].toString()).get(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
+        future: packageRef.doc(packageDetail['packageId'].toString()).get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Column(
+              children: const [
+                Center(child: Text("Something went wrong")),
+              ],
+            );
+          }
 
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-        return Dialog(
-          shape: RoundedRectangleBorder(
-              side: BorderSide.none, borderRadius: BorderRadius.circular(20.0)),
-          elevation: 10.0,
-          backgroundColor: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: size.width,
-                padding: const EdgeInsets.only(
-                  top: 15.0,
-                  bottom: 20.0,
-                  left: 20.0,
-                  right: 20.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.white38,
-                      offset: Offset(0, 2),
-                      blurRadius: 10.0,
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Center(child: Text("Document does not exist"));
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide.none,
+                  borderRadius: BorderRadius.circular(20.0)),
+              elevation: 10.0,
+              backgroundColor: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: size.width,
+                    padding: const EdgeInsets.only(
+                      top: 15.0,
+                      bottom: 20.0,
+                      left: 20.0,
+                      right: 20.0,
                     ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                     CircleAvatar(
-                      radius: 55.0,
-                      backgroundColor: kSecondaryColor,
-                      backgroundImage:  NetworkImage(data['imgUrl']),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Center(
-                      child: Text(
-                        data['packageName'],
-                        style: GoogleFonts.lato(
-                          fontSize: 20.0,
-                          color: Colors.black,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.white38,
+                          offset: Offset(0, 2),
+                          blurRadius: 10.0,
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 100,
-                      child: Divider(
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                    Column(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Row(
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        CircleAvatar(
+                          radius: 55.0,
+                          backgroundColor: kSecondaryColor,
+                          backgroundImage: NetworkImage(data['imgUrl']),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        Center(
+                          child: Text(
+                            data['packageName'],
+                            style: GoogleFonts.lato(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 100,
+                          child: Divider(
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 26.0, left: 20.0),
-                              child: Text(
-                                'Place Details:',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 18.0,
-                                  color: kPrimaryColor,
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 26.0, left: 20.0),
+                                  child: Text(
+                                    'Place Details:',
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 18.0,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    Icons.location_on,
+                                    size: 22,
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      data['locationName'],
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    Icons.start,
+                                    color: Colors.blueGrey.shade200,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: Text(
+                                    data['startPointName'],
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 12.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    Icons.stop,
+                                    size: 22,
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      data['endPointName'],
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 5,
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 26.0, left: 6.0),
+                                  child: Text(
+                                    'Travel Details:',
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 18.0,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                          ],
                         ),
-                        
+                        SizedBox(
+                          height: size.height * 0.005,
+                        ),
                         Row(
                           children: [
                             const Padding(
                               padding: EdgeInsets.only(left: 6.0),
                               child: Icon(
-                                Icons.location_on,
-                                size: 22,
+                                Icons.price_check,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                data['price'].toString(),
+                                style: GoogleFonts.roboto(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 6.0),
+                              child: Icon(
+                                Icons.description,
                                 color: Colors.blueGrey,
                               ),
                             ),
@@ -265,156 +388,37 @@ class PackageDetails extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
                                 child: Text(
-                                  data['locationName'],
+                                  data['placeDescription'].toString(),
                                   style: GoogleFonts.roboto(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                         Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: Icon(
-                                Icons.start,
-                                color: Colors.blueGrey.shade200,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                data['startPointName'],
-                                style: GoogleFonts.roboto(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
+                        SizedBox(
+                          height: size.height * 0.05,
                         ),
-                         Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 6.0),
-                          child: Icon(
-                            Icons.stop,
-                            size: 22,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              data['endPointName'],
-                              style: GoogleFonts.roboto(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
+                        CustomButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            text: 'OK',
+                            color: Colors.white,
+                            backgroundColor: const Color(0xff4f5b8a),
+                            width: 55.0,
+                            fontSize: 12.0),
                       ],
                     ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 26.0, left: 6.0),
-                              child: Text(
-                                'Travel Details:',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 18.0,
-                                  color: kPrimaryColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                       
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.005,
-                    ),
-                    
-                   
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 6.0),
-                          child: Icon(
-                            Icons.price_check,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            data['price'].toString(),
-                            style: GoogleFonts.roboto(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                      ],
-                    ),
-                   Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 6.0),
-                          child: Icon(
-                            Icons.description,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              data['placeDescription'].toString(),
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                     SizedBox(
-                      height: size.height * 0.05,
-                    ),
-                    CustomButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        text: 'OK',
-                        color: Colors.white,
-                        backgroundColor: const Color(0xff4f5b8a),
-                        width: 55.0,
-                        fontSize: 12.0),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-        }
+            );
+          }
 
-        return const  Center(child: CircularProgressIndicator());
-      }
-    );
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/constants/constants.dart';
+import 'package:traveladminapp/screens/acceptedrequests.dart';
 import 'package:traveladminapp/screens/homescreen.dart';
 import 'package:traveladminapp/screens/login.dart';
 import 'package:traveladminapp/screens/notificationscreen.dart';
@@ -10,7 +11,6 @@ import 'package:traveladminapp/screens/totalplaces.dart';
 import 'package:traveladminapp/screens/uploadplaces.dart';
 import 'package:traveladminapp/screens/users.dart';
 import 'package:traveladminapp/screens/welcomescreen.dart';
-import 'package:traveladminapp/services/database.dart';
 
 class MenuItems extends StatelessWidget {
   const MenuItems({Key? key}) : super(key: key);
@@ -54,10 +54,17 @@ class MenuItems extends StatelessWidget {
                     },
                   ),
                   MenuComponents(
-                    text: 'Requests',
+                    text: 'Booking Requests',
                     icon: Icons.request_page,
                     ontap: () {
                       Get.off(const RequestPage());
+                    },
+                  ),
+                  MenuComponents(
+                    text: 'Accepted Bookings',
+                    icon: Icons.request_quote,
+                    ontap: () {
+                      Get.off(const AcceptedRequestPage());
                     },
                   ),
                   MenuComponents(
@@ -87,11 +94,6 @@ class MenuItems extends StatelessWidget {
                     ontap: () {
                       Get.off(const Users());
                     },
-                  ),
-                  MenuComponents(
-                    text: 'Settings',
-                    icon: Icons.settings,
-                    ontap: () {},
                   ),
                   MenuComponents(
                     text: 'Payment',

@@ -6,19 +6,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
-import 'package:traveladminapp/model/databaseModel.dart';
+import 'package:traveladminapp/model/chat.dart';
+import 'package:traveladminapp/screens/chatscreen.dart';
+import 'package:traveladminapp/screens/welcomescreen.dart';
 
-class RequestPage extends StatefulWidget {
-  const RequestPage({Key? key}) : super(key: key);
+class AcceptedRequestPage extends StatefulWidget {
+  const AcceptedRequestPage({Key? key}) : super(key: key);
 
   @override
-  State<RequestPage> createState() => _RequestPageState();
+  State<AcceptedRequestPage> createState() => _AcceptedRequestPageState();
 }
 
-class _RequestPageState extends State<RequestPage> {
-  final Stream<QuerySnapshot> requestedPackage = FirebaseFirestore.instance
-      .collection('requestedPackage')
-      .where('status', isEqualTo: 'pending')
+class _AcceptedRequestPageState extends State<AcceptedRequestPage> {
+  final Stream<QuerySnapshot> acceptedPackage = FirebaseFirestore.instance
+      .collection('acceptedPackage')
+      .where('status', isEqualTo: 'accepted')
       .snapshots();
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _RequestPageState extends State<RequestPage> {
         toolbarHeight: 65.0,
         centerTitle: true,
         title: Text(
-          'Booking Requests',
+          'Accepted Bookings',
           style: GoogleFonts.laila(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,
@@ -43,14 +45,14 @@ class _RequestPageState extends State<RequestPage> {
         child: MenuItems(),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: requestedPackage,
+        stream: acceptedPackage,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
+            return const Center(child: Text("Loading"));
           }
 
           return ListView(
@@ -146,6 +148,9 @@ class _RequestPageState extends State<RequestPage> {
                                       color: Colors.black,
                                     )),
                               ]),
+                          SizedBox(
+                            width: size.width * 0.025,
+                          ),
                           Row(
                             children: [
                               RequestCardComponents(
@@ -164,22 +169,13 @@ class _RequestPageState extends State<RequestPage> {
                               ),
                               SizedBox(width: size.width * 0.01),
                               RequestCardComponents(
-                                title: 'Cancel',
-                                icon: Icons.cancel,
+                                title: 'Chat',
+                                icon: Icons.chat,
                                 ontap: () {
-                                  database.deleteBookings(data['requestedId']);
+                                  Get.off(ChatScreen(
+                                      adminId: userAuthentication.userID));
                                 },
                               ),
-                              SizedBox(width: size.width * 0.01),
-                              RequestCardComponents(
-                                title: 'Accept',
-                                icon: Icons.check,
-                                ontap: () {
-                                  database.acceptPackage(
-                                      data['requestedId'], data);
-                                },
-                              ),
-                              SizedBox(width: size.width * 0.01),
                             ],
                           )
                         ],
