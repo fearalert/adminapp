@@ -26,19 +26,19 @@ class Database {
     return count;
   }
 
-  Future<int> getCountbooking() async {
-    int count = await FirebaseFirestore.instance
-        .collection('requestedPackage')
-        .where('status', isEqualTo: 'pending')
-        .get()
-        .then((value) => value.size);
-    return count;
-  }
+  // Future<int> getCountbooking() async {
+  //   int count = await FirebaseFirestore.instance
+  //       .collection('requestedPackage')
+  //       .where('status', isEqualTo: 'pending')
+  //       .get()
+  //       .then((value) => value.size);
+  //   return count;
+  // }
 
   Future<int> getCountAcceptedbooking() async {
     int count = await FirebaseFirestore.instance
         .collection('requestedPackage')
-        .where('status', isEqualTo: 'pending')
+        // .where('status', isEqualTo: 'pending')
         .get()
         .then((value) => value.size);
     return count;

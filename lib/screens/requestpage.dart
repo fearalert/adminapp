@@ -18,7 +18,7 @@ class RequestPage extends StatefulWidget {
 class _RequestPageState extends State<RequestPage> {
   final Stream<QuerySnapshot> requestedPackage = FirebaseFirestore.instance
       .collection('requestedPackage')
-      .where('status', isEqualTo: 'pending')
+      // .where('status', isEqualTo: 'pending')
       .snapshots();
   @override
   Widget build(BuildContext context) {

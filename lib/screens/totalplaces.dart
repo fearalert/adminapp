@@ -148,7 +148,7 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                   children: [
                                     PlacesComponents(
                                       count: '100',
-                                      icon: Icons.place,
+                                      icon: Icons.star,
                                       ontap: () {},
                                     ),
                                     SizedBox(width: size.width * 0.01),

@@ -53,15 +53,15 @@ class MenuItems extends StatelessWidget {
                       Get.off(const HomeScreen());
                     },
                   ),
+                  // MenuComponents(
+                  //   text: 'Booking Requests',
+                  //   icon: Icons.request_page,
+                  //   ontap: () {
+                  //     Get.off(const RequestPage());
+                  //   },
+                  // ),
                   MenuComponents(
-                    text: 'Booking Requests',
-                    icon: Icons.request_page,
-                    ontap: () {
-                      Get.off(const RequestPage());
-                    },
-                  ),
-                  MenuComponents(
-                    text: 'Accepted Bookings',
+                    text: 'User Bookings',
                     icon: Icons.request_quote,
                     ontap: () {
                       Get.off(const AcceptedRequestPage());

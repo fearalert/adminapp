@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
-import 'package:traveladminapp/model/chat.dart';
 import 'package:traveladminapp/screens/chatscreen.dart';
 import 'package:traveladminapp/screens/welcomescreen.dart';
 
@@ -19,8 +18,8 @@ class AcceptedRequestPage extends StatefulWidget {
 
 class _AcceptedRequestPageState extends State<AcceptedRequestPage> {
   final Stream<QuerySnapshot> acceptedPackage = FirebaseFirestore.instance
-      .collection('acceptedPackage')
-      .where('status', isEqualTo: 'accepted')
+      .collection('requestedPackage')
+      // .where('status', isEqualTo: 'accepted')
       .snapshots();
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _AcceptedRequestPageState extends State<AcceptedRequestPage> {
         toolbarHeight: 65.0,
         centerTitle: true,
         title: Text(
-          'Accepted Bookings',
+          'User Bookings',
           style: GoogleFonts.laila(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,

@@ -199,7 +199,7 @@ class HomeScreen extends StatelessWidget {
                                   height: 20,
                                 ),
                                 Text(
-                                  'Pending Requests',
+                                  'User Bookings',
                                   style: GoogleFonts.laila(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -210,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                                   height: size.height * 0.03,
                                 ),
                                 FutureBuilder<int>(
-                                    future: database.getCountbooking(),
+                                    future: database.getCountAcceptedbooking(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.done) {
@@ -230,56 +230,56 @@ class HomeScreen extends StatelessWidget {
                             )),
                       ),
                     ]),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      width: size.width * 0.45,
-                      height: size.height * 0.2,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Accepted Bookings',
-                            style: GoogleFonts.laila(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.03,
-                          ),
-                          FutureBuilder<int>(
-                              future: database.getCountAcceptedbooking(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  return Text(
-                                    '${snapshot.data}',
-                                    style: GoogleFonts.laila(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }),
-                        ],
-                      )),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Container(
+                //       width: size.width * 0.45,
+                //       height: size.height * 0.2,
+                //       decoration: const BoxDecoration(
+                //         color: Colors.white,
+                //         borderRadius: BorderRadius.only(
+                //           topLeft: Radius.circular(10),
+                //           topRight: Radius.circular(10),
+                //           bottomRight: Radius.circular(10),
+                //           bottomLeft: Radius.circular(10),
+                //         ),
+                //       ),
+                //       child: Column(
+                //         children: [
+                //           const SizedBox(
+                //             height: 20,
+                //           ),
+                //           Text(
+                //             'Accepted Bookings',
+                //             style: GoogleFonts.laila(
+                //               fontSize: 18,
+                //               fontWeight: FontWeight.w600,
+                //               color: Colors.black,
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             height: size.height * 0.03,
+                //           ),
+                //           FutureBuilder<int>(
+                //               future: database.getCountAcceptedbooking(),
+                //               builder: (context, snapshot) {
+                //                 if (snapshot.connectionState ==
+                //                     ConnectionState.done) {
+                //                   return Text(
+                //                     '${snapshot.data}',
+                //                     style: GoogleFonts.laila(
+                //                       fontSize: 20,
+                //                       fontWeight: FontWeight.w600,
+                //                       color: Colors.black,
+                //                     ),
+                //                   );
+                //                 }
+                //                 return const Center(
+                //                     child: CircularProgressIndicator());
+                //               }),
+                //         ],
+                //       )),
+                // ),
               ],
             );
           }),
