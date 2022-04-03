@@ -68,14 +68,14 @@ class MenuItems extends StatelessWidget {
                     },
                   ),
                   MenuComponents(
-                    text: 'Places',
+                    text: 'Packages',
                     icon: Icons.place,
                     ontap: () {
                       Get.off(const TotalPlaces());
                     },
                   ),
                   MenuComponents(
-                    text: 'Upload Places',
+                    text: 'Upload Package',
                     icon: Icons.upload,
                     ontap: () {
                       Get.off(const UploadPlaces());
