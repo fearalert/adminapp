@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:traveladminapp/model/chat.dart';
 import 'package:traveladminapp/model/placesmodel.dart';
 
 final Stream<QuerySnapshot> requestStream =
@@ -84,6 +85,25 @@ class Database {
 
     await acceptedRef.doc(documentId).update({'status': 'accepted'});
   }
+
+  Future<void> sendMessage(String userId, String text, String packageID)async{
+   final messageRef =  FirebaseFirestore.instance.collection('messages').doc(userId).collection(packageID);
+  final message = Chat(
+    message: text,
+    userName: 'Admin',
+    time: Timestamp.now(),
+    uid: admin!.uid,
+    
+  );
+
+  await messageRef.add(message.toMap());
+
+ }
+
+
+
+
+
 }
 
 Database database = Database();

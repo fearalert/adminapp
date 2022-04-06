@@ -1,14 +1,24 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 class Chat {
-  String? _message;
-  String? _sentBy;
+  String? message;
+  String? userName;
+  Timestamp? time;
+  String? uid;
 
-  Chat();
+  Chat({ this.message, this.userName, this.time, this.uid});
 
-  String get message => _message!;
-  String get sentBy => _sentBy!;
 
-  Chat.fromData(Map chatData) {
-    _message = chatData['message'];
-    _sentBy = chatData['sentBy'];
+  Map<String, dynamic> toMap() {
+    return {
+      'message': message,
+      'userName': userName,
+      'time': time,
+      'uid': uid,
+    };
   }
 }
+

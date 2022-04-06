@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
-import 'package:traveladminapp/screens/chatscreen.dart';
+import 'package:traveladminapp/model/chat.dart';
+import 'package:traveladminapp/screens/chats.dart';
 import 'package:traveladminapp/screens/welcomescreen.dart';
 
 class AcceptedRequestPage extends StatefulWidget {
@@ -172,7 +173,9 @@ class _AcceptedRequestPageState extends State<AcceptedRequestPage> {
                                 icon: Icons.chat,
                                 ontap: () {
                                   Get.off(ChatScreen(
-                                      adminId: userAuthentication.userID));
+                                    userId: data['userId'] ,
+                                    packageId: data['packageId'],
+                                     ));
                                 },
                               ),
                             ],

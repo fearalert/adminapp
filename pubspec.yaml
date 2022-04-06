@@ -48,6 +48,7 @@ dependencies:
   uuid: ^3.0.6
   encrypt: ^5.0.1
   http: ^0.13.4
+  flutter_local_notifications: ^9.4.0
   
 dev_dependencies:
   flutter_test:
