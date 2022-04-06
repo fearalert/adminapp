@@ -73,7 +73,7 @@ class _TotalPlacesState extends State<TotalPlaces> {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   return SizedBox(
-                    height: 130.0,
+                    height: 140,
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.only(
