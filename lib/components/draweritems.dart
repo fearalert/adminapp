@@ -81,13 +81,13 @@ class MenuItems extends StatelessWidget {
                       Get.off(const UploadPlaces());
                     },
                   ),
-                  MenuComponents(
-                    text: 'Notifications',
-                    icon: Icons.notifications,
-                    ontap: () {
-                      Get.off(const NotificationScreen());
-                    },
-                  ),
+                  // MenuComponents(
+                  //   text: 'Notifications',
+                  //   icon: Icons.notifications,
+                  //   ontap: () {
+                  //     Get.off(const NotificationScreen());
+                  //   },
+                  // ),
                   MenuComponents(
                     text: 'Users',
                     icon: Icons.person,
@@ -95,11 +95,11 @@ class MenuItems extends StatelessWidget {
                       Get.off(const Users());
                     },
                   ),
-                  MenuComponents(
-                    text: 'Payment',
-                    icon: Icons.payments,
-                    ontap: () {},
-                  ),
+                  // MenuComponents(
+                  //   text: 'Payment',
+                  //   icon: Icons.payments,
+                  //   ontap: () {},
+                  // ),
                   MenuComponents(
                     text: 'Sign Out',
                     icon: Icons.logout,

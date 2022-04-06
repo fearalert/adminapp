@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:traveladminapp/model/adminmodel.dart';
 import 'package:traveladminapp/model/chat.dart';
 import 'package:traveladminapp/model/placesmodel.dart';
+import 'package:traveladminapp/screens/welcomescreen.dart';
 
 final Stream<QuerySnapshot> requestStream =
     FirebaseFirestore.instance.collection('requestedPackage').snapshots();
@@ -45,6 +48,16 @@ class Database {
     return count;
   }
 
+  Future<int> getReviewsCount() async {
+    int count = await FirebaseFirestore.instance
+        .collection('packages')
+        .doc()
+        .collection('ratingReviews')
+        .get()
+        .then((value) => value.size);
+    return count;
+  }
+
   Future<int> getCountPackages() async {
     int count = await FirebaseFirestore.instance
         .collection('packages')
@@ -53,6 +66,44 @@ class Database {
     return count;
   }
 
+  Future<String?> getMyToken() async {
+    final userQuery = await FirebaseFirestore.instance
+        .collection('admins')
+        .where('id', isEqualTo: userAuthentication.userID)
+        .get();
+
+    final userQueryDocsSnap = userQuery.docs[0];
+    String? token = userQueryDocsSnap.data()['token'];
+    return token;
+  }
+
+//
+  void saveToken(String token) async {
+    final userQuery = await FirebaseFirestore.instance
+        .collection('admins')
+        .where('id', isEqualTo: userAuthentication.userID)
+        .get();
+    final userQueryDocsSnap = userQuery.docs[0];
+    final userRef = FirebaseFirestore.instance
+        .collection('admins')
+        .doc(userQueryDocsSnap.id);
+    await userRef.update({'token': token});
+
+    if (kDebugMode) {
+      print("Token saved");
+    }
+  }
+
+  Future<String?> getToken(String? uid) async {
+    final userQuery = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: uid)
+        .get();
+
+    final userQueryDocsSnap = userQuery.docs[0];
+
+    return userQueryDocsSnap.data()['token'];
+  }
   //    Future<int> getCountNotifications() async {
   //   int count = await FirebaseFirestore.instance
   //       .collection('notifications')
@@ -86,24 +137,24 @@ class Database {
     await acceptedRef.doc(documentId).update({'status': 'accepted'});
   }
 
-  Future<void> sendMessage(String userId, String text, String packageID)async{
-   final messageRef =  FirebaseFirestore.instance.collection('messages').doc(userId).collection(packageID);
-  final message = Chat(
-    message: text,
-    userName: 'Admin',
-    time: Timestamp.now(),
-    uid: admin!.uid,
-    
-  );
+  Future<void> sendMessage(String userId, String text, String packageID) async {
+    final messageRef = FirebaseFirestore.instance
+        .collection('messages')
+        .doc(userId)
+        .collection(packageID);
+    final message = Chat(
+      message: text,
+      userName: 'Admin',
+      time: Timestamp.now(),
+      uid: admin!.uid,
+    );
 
-  await messageRef.add(message.toMap());
+    await messageRef.add(message.toMap());
+  }
 
- }
-
-
-
-
-
+  getUserName() {
+    // return adminModel.name;
+  }
 }
 
 Database database = Database();

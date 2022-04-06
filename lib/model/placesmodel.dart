@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traveladminapp/authentication/adminauthentication.dart';
 import 'package:traveladminapp/screens/homescreen.dart';
+import 'package:traveladminapp/screens/welcomescreen.dart';
 import 'package:uuid/uuid.dart';
 
 class PlacesDetails {
@@ -18,30 +19,33 @@ class PlacesDetails {
   String? endPointName;
   String? packageId;
   double? price;
+  double? avgRating;
+  String? adminID;
 
-  PlacesDetails({
-    this.packageName,
-    this.locationName,
-    this.imgUrl,
-    this.placeDescription,
-    this.startPointName,
-    this.endPointName,
-    this.price,
-    this.packageId,
-
-  });
+  PlacesDetails(
+      {this.packageName,
+      this.locationName,
+      this.imgUrl,
+      this.placeDescription,
+      this.startPointName,
+      this.endPointName,
+      this.price,
+      this.packageId,
+      this.avgRating,
+      this.adminID});
 
   factory PlacesDetails.fromMap(map) {
     return PlacesDetails(
-      packageName: map['placeName'],
-      locationName: map['locationName'],
-      imgUrl: map['imgUrl'],
-      placeDescription: map['placeDescription'],
-      startPointName: map['startPointName'],
-      endPointName: map['endPointName'],
-      price: map['price'],
-      packageId: map['packageId']
-    );
+        packageName: map['placeName'],
+        locationName: map['locationName'],
+        imgUrl: map['imgUrl'],
+        placeDescription: map['placeDescription'],
+        startPointName: map['startPointName'],
+        endPointName: map['endPointName'],
+        price: map['price'],
+        packageId: map['packageId'],
+        avgRating: map['avgRating'],
+        adminID: map['adminID']);
   }
 
   Map<String, dynamic> toMap() {
@@ -53,7 +57,9 @@ class PlacesDetails {
       'startPointName': startPointName,
       'endPointName': endPointName,
       'price': price,
-      'packageId': packageId, 
+      'packageId': packageId,
+      'avgRating': avgRating,
+      'adminID': adminID
     };
   }
 }
@@ -63,7 +69,7 @@ PlacesDetails placesDetails = PlacesDetails();
 
 postPlaceDetailsToFirestore() async {
   const uuid = Uuid();
-     String uid = uuid.v4();
+  String uid = uuid.v4();
   placesDetails.packageName = uploadPlaceController.placeNameController.text;
   placesDetails.locationName =
       uploadPlaceController.locationNameController.text;
@@ -77,11 +83,13 @@ postPlaceDetailsToFirestore() async {
   placesDetails.price =
       double.parse(uploadPlaceController.priceController.text);
   placesDetails.packageId = uid;
+  placesDetails.avgRating = 0.0;
+  placesDetails.adminID = userAuthentication.userID;
 
   return await FirebaseFirestore.instance
       .collection('packages')
       .doc(uid)
-      .set(placesDetails.toMap(),SetOptions(merge: true))
+      .set(placesDetails.toMap(), SetOptions(merge: true))
       .then((value) {
     print('data added');
     getSnackBar(
@@ -100,8 +108,7 @@ postPlaceDetailsToFirestore() async {
   });
 }
 
-AdminAuthentication adminAuthentication = AdminAuthentication();
-User? admin = adminAuthentication.currentUser;
+User? admin = userAuthentication.currentUser;
 final UploadPlaceController uploadPlaceController = UploadPlaceController();
 
 class UploadPlaceController extends GetxController {

@@ -20,16 +20,19 @@ class UserData {
   String? userID;
   String? userEmail;
   int? userPhoneNo;
-  // String? profileUrl;
+  String? profileUrl;
 
-  UserData({this.userName, this.userID, this.userEmail, this.userPhoneNo
-      // this.profileUrl
-      });
+  UserData(
+      {this.userName,
+      this.userID,
+      this.userEmail,
+      this.userPhoneNo,
+      this.profileUrl});
 
   UserData.fromMap(Map snapshot, String id)
-      : userName = snapshot['name'] ?? '',
-        userID = snapshot['uid'] ?? '',
-        userEmail = snapshot['email'] ?? '',
-        userPhoneNo = snapshot['phoneNo'] ?? 0;
-  // profileUrl = snapshot['profileUrl'] ?? '';
+      : userName = snapshot['name'],
+        userID = snapshot['id'],
+        userEmail = snapshot['email'],
+        userPhoneNo = snapshot['phoneNo'],
+        profileUrl = snapshot['profileUrl'];
 }

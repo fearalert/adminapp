@@ -1,22 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/constants/constants.dart';
-import 'package:traveladminapp/screens/notificationscreen.dart';
+import 'package:traveladminapp/model/notificationhandler.dart';
 import 'package:traveladminapp/model/databaseModel.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const id = '/home';
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    FirebaseMessaging.onMessage.listen((message) {
+      if (kDebugMode) {
+        print(message.notification!.title);
+      }
+    });
+
+    super.initState();
+    notificationHandler.onMessageHandler();
+    notificationHandler.resolveToken();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: appbar('Dashboard', Icons.notifications_active),
+      appBar: appbar('Dashboard', Icons.logout),
       drawer: const Drawer(
         child: MenuItems(),
       ),
@@ -135,151 +159,58 @@ class HomeScreen extends StatelessWidget {
                             )),
                       ),
                     ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: size.width * 0.45,
-                            height: size.height * 0.2,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        width: size.width * 0.45,
+                        height: size.height * 0.2,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'User Bookings',
+                              style: GoogleFonts.laila(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  'Notifications',
-                                  style: GoogleFonts.laila(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.03,
-                                ),
-                                Text(
-                                  '20',
-                                  style: GoogleFonts.laila(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: size.width * 0.45,
-                            height: size.height * 0.2,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
+                            SizedBox(
+                              height: size.height * 0.03,
                             ),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  'User Bookings',
-                                  style: GoogleFonts.laila(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.03,
-                                ),
-                                FutureBuilder<int>(
-                                    future: database.getCountAcceptedbooking(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.done) {
-                                        return Text(
-                                          '${snapshot.data}',
-                                          style: GoogleFonts.laila(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                          ),
-                                        );
-                                      }
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    }),
-                              ],
-                            )),
-                      ),
-                    ]),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Container(
-                //       width: size.width * 0.45,
-                //       height: size.height * 0.2,
-                //       decoration: const BoxDecoration(
-                //         color: Colors.white,
-                //         borderRadius: BorderRadius.only(
-                //           topLeft: Radius.circular(10),
-                //           topRight: Radius.circular(10),
-                //           bottomRight: Radius.circular(10),
-                //           bottomLeft: Radius.circular(10),
-                //         ),
-                //       ),
-                //       child: Column(
-                //         children: [
-                //           const SizedBox(
-                //             height: 20,
-                //           ),
-                //           Text(
-                //             'Accepted Bookings',
-                //             style: GoogleFonts.laila(
-                //               fontSize: 18,
-                //               fontWeight: FontWeight.w600,
-                //               color: Colors.black,
-                //             ),
-                //           ),
-                //           SizedBox(
-                //             height: size.height * 0.03,
-                //           ),
-                //           FutureBuilder<int>(
-                //               future: database.getCountAcceptedbooking(),
-                //               builder: (context, snapshot) {
-                //                 if (snapshot.connectionState ==
-                //                     ConnectionState.done) {
-                //                   return Text(
-                //                     '${snapshot.data}',
-                //                     style: GoogleFonts.laila(
-                //                       fontSize: 20,
-                //                       fontWeight: FontWeight.w600,
-                //                       color: Colors.black,
-                //                     ),
-                //                   );
-                //                 }
-                //                 return const Center(
-                //                     child: CircularProgressIndicator());
-                //               }),
-                //         ],
-                //       )),
-                // ),
+                            FutureBuilder<int>(
+                                future: database.getCountAcceptedbooking(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Text(
+                                      '${snapshot.data}',
+                                      style: GoogleFonts.laila(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }),
+                          ],
+                        )),
+                  ),
+                ]),
               ],
             );
           }),
@@ -302,16 +233,6 @@ appbar(String? text, IconData icon) {
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.normal),
     ),
-    actions: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: IconButton(
-            onPressed: () {
-              Get.off(const NotificationScreen());
-            },
-            icon: Icon(icon)),
-      ),
-    ],
   );
 }
 

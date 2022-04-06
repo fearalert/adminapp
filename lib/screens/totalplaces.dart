@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:traveladminapp/authentication/adminauthentication.dart';
 import 'package:traveladminapp/components/draweritems.dart';
 import 'package:traveladminapp/components/requestdetails.dart';
 import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/model/databaseModel.dart';
+import 'package:traveladminapp/screens/pages.dart/commentspage.dart';
 
 final Stream<QuerySnapshot> _placestream =
     FirebaseFirestore.instance.collection('packages').snapshots();
@@ -147,22 +149,22 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                 Row(
                                   children: [
                                     PlacesComponents(
-                                      count: '100',
+                                      count:
+                                          data['avgRating'].toStringAsFixed(2),
                                       icon: Icons.star,
                                       ontap: () {},
                                     ),
                                     SizedBox(width: size.width * 0.01),
                                     PlacesComponents(
-                                      count: '15',
+                                      count: '',
                                       icon: Icons.comment,
-                                      ontap: () {},
+                                      ontap: () {
+                                        Get.off(CommentsPage(
+                                          packageId: data['packageId'],
+                                        ));
+                                      },
                                     ),
                                     SizedBox(width: size.width * 0.01),
-                                    PlacesComponents(
-                                      count: 'Edit',
-                                      icon: Icons.edit,
-                                      ontap: () {},
-                                    ),
                                     SizedBox(width: size.width * 0.01),
                                     PlacesComponents(
                                       count: 'Delete',
@@ -172,6 +174,12 @@ class _TotalPlacesState extends State<TotalPlaces> {
                                             child: CircularProgressIndicator());
                                         database
                                             .deletePackage(data['packageId']);
+                                        getSnackBar(
+                                          color: Colors.green.shade300,
+                                          title: 'Successfully Deleted',
+                                          message: 'Deleted Package  ' +
+                                              data['packageName'],
+                                        );
                                       },
                                     ),
                                     SizedBox(width: size.width * 0.01),
@@ -199,9 +207,8 @@ class _TotalPlacesState extends State<TotalPlaces> {
   }
 }
 
-// ignore: must_be_immutable
 class PlacesComponents extends StatelessWidget {
-  late String? count;
+  String? count;
   final IconData? icon;
   final VoidCallback? ontap;
   PlacesComponents({
@@ -239,16 +246,3 @@ class PlacesComponents extends StatelessWidget {
     );
   }
 }
-
-// class PlacesStream extends StatelessWidget {
-//   const PlacesStream({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder(
-//       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
-//       },
-//     );
-//   }
-// }

@@ -173,9 +173,9 @@ class _AcceptedRequestPageState extends State<AcceptedRequestPage> {
                                 icon: Icons.chat,
                                 ontap: () {
                                   Get.off(ChatScreen(
-                                    userId: data['userId'] ,
+                                    userId: data['userId'],
                                     packageId: data['packageId'],
-                                     ));
+                                  ));
                                 },
                               ),
                             ],
