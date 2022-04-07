@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +6,8 @@ import 'package:traveladminapp/components/custombutton.dart';
 import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/screens/login.dart';
 import 'package:traveladminapp/screens/registration.dart';
+
+import '../authentication/adminauthentication.dart';
 
 class GetStarted extends StatelessWidget {
   static const id = '/getstarted';
@@ -52,7 +55,22 @@ class GetStarted extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               CustomButton(
-                                onPressed: () => Get.toNamed(Registration.id),
+                                onPressed: ()async {
+
+                                   int count = await FirebaseFirestore.instance.collection('admins').get().then((value)=> value.size);
+                                   print(count);
+                                            if(count == 1){
+                                              getSnackBar(
+                                                color: Colors.red.shade300,
+                                                title: 'Failed to create admin',
+                                                message: 'Admin already registered'
+                                              );
+                                                Get.toNamed(LogInScreen.id);
+                                            }else{
+
+                                            Get.toNamed(Registration.id);}
+
+                                } ,
                                 text: 'Register as Admin',
                                 color: Colors.white,
                                 backgroundColor: kPrimaryColor,

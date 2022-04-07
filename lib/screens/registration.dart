@@ -6,6 +6,7 @@ import 'package:traveladminapp/components/custompasswordtextfield.dart';
 import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/main.dart';
 import 'package:traveladminapp/screens/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Registration extends StatelessWidget {
   static const id = '/registration';
@@ -227,7 +228,7 @@ class Registration extends StatelessWidget {
 
   Future<void> _handleRegister() async {
     final FormState? form = _formKey.currentState;
-
+   
     if (form!.validate()) {
       form.save();
       final adminAuthentication = AdminAuthentication();
