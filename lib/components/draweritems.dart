@@ -5,8 +5,6 @@ import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/screens/acceptedrequests.dart';
 import 'package:traveladminapp/screens/homescreen.dart';
 import 'package:traveladminapp/screens/login.dart';
-import 'package:traveladminapp/screens/notificationscreen.dart';
-import 'package:traveladminapp/screens/requestpage.dart';
 import 'package:traveladminapp/screens/totalplaces.dart';
 import 'package:traveladminapp/screens/uploadplaces.dart';
 import 'package:traveladminapp/screens/users.dart';

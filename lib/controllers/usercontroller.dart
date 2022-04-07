@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:traveladminapp/services/database.dart';
 
 class UserController extends GetxController {
   final String userID;
@@ -11,7 +10,7 @@ class UserController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    userData.bindStream(Database().userDataStream(userID));
+    // userData.bindStream(Database().userDataStream(userID));
   }
 }
 
