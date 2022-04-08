@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/controllers/registrationcontroller.dart';
+import 'package:traveladminapp/screens/confirmverification.dart';
+import 'package:traveladminapp/screens/forgotpassword.dart';
 import 'package:traveladminapp/screens/getstarted.dart';
 import 'package:traveladminapp/screens/homescreen.dart';
 import 'package:traveladminapp/screens/login.dart';
@@ -39,6 +41,11 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: WelcomeScreen.id, page: () => const WelcomeScreen()),
         GetPage(name: HomeScreen.id, page: () => const HomeScreen()),
+        GetPage(
+            name: ForgotPasswordScreen.id, page: () => ForgotPasswordScreen()),
+        GetPage(
+            name: ConfirmEmailVerification.id,
+            page: () => const ConfirmEmailVerification()),
         GetPage(name: GetStarted.id, page: () => const GetStarted()),
         GetPage(
             curve: Curves.easeIn,

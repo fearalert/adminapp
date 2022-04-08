@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:traveladminapp/authentication/adminauthentication.dart';
 import 'package:traveladminapp/components/custompasswordtextfield.dart';
 import 'package:traveladminapp/constants/constants.dart';
 import 'package:traveladminapp/controllers/logincontroller.dart';
+import 'package:traveladminapp/screens/forgotpassword.dart';
 
 class LogInScreen extends StatelessWidget {
   static const id = '/login';
@@ -69,10 +71,10 @@ class LogInScreen extends StatelessWidget {
                   ),
                   child: SingleChildScrollView(
                     child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
                           // SizedBox(height: size.height * 0.08),
                           Center(
                             child: Text(
@@ -92,7 +94,32 @@ class LogInScreen extends StatelessWidget {
                           SizedBox(
                             height: size.height * 0.025,
                           ),
-
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  // Get.to(ForgotPasswordScreen.id);
+                                  // Navigator.pushNamed(
+                                  //     context,
+                                  //     MaterialPageAppRoute(
+                                  //         builder: (context) =>
+                                  //             ForgotPasswordScreen()));
+                                  Get.offAllNamed(ForgotPasswordScreen.id);
+                                },
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: GoogleFonts.laila(
+                                    fontSize: 12.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.035,
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: size.height * 0.02,
                           ),
@@ -130,13 +157,7 @@ class LogInScreen extends StatelessWidget {
                           SizedBox(
                             height: size.height * 0.03,
                           ),
-
-                          SizedBox(
-                            height: size.height * 0.01,
-                          ),
-                        ],
-                      ),
-                    ),
+                        ])),
                   ),
                 ),
               ),
