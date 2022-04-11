@@ -46,7 +46,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          // SizedBox(height: size.height * 0.08),
                           Center(
                             child: Text(
                               "Reset Password",
@@ -69,10 +68,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: size.height * 0.045),
-
                           emailField,
                           SizedBox(height: size.height * 0.025),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

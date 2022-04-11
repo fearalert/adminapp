@@ -90,11 +90,14 @@ class _UsersState extends State<Users> {
                                 color: Colors.grey,
                               ))),
                       child: ListTile(
-                        leading: const CircleAvatar(
+                        leading: CircleAvatar(
                           backgroundColor: kSecondaryColor,
-                          backgroundImage: NetworkImage(
-                            'https://th.bing.com/th/id/R.0e92282c004ac13f55a8f43479c4125d?rik=gI7lf2sePTbhqA&pid=ImgRaw&r=0',
-                          ),
+                          backgroundImage: data['profileUrl'] != null
+                              ? NetworkImage(
+                                  data['profileUrl'],
+                                )
+                              : const NetworkImage(
+                                  'https://th.bing.com/th/id/R.ead4e500f26211447f2b83a8fedb35b5?rik=e5WHTShSpipi3Q&pid=ImgRaw&r=0'),
                         ),
                         selectedColor: kSecondaryColor,
                         selectedTileColor: kSecondaryColor,
@@ -116,7 +119,10 @@ class _UsersState extends State<Users> {
                             SizedBox(
                               height: size.height * 0.005,
                             ),
-                            Text(data['phoneNo'].toString(),
+                            Text(
+                                data['phoneNo'] != null
+                                    ? data['phoneNo'].toString()
+                                    : '98xxxxxxxx',
                                 style: GoogleFonts.laila()),
                             SizedBox(
                               height: size.height * 0.005,
